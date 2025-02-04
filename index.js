@@ -4,6 +4,12 @@ const app = express();
 const port = 7000;
 
 const { error } = require("console");
+const { default: mongoose } = require("mongoose");
+
+// Mongoose
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected w/ Mongoose"));
 
 // app.set ("", "")
 // app.set ("", "")

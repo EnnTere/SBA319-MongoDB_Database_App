@@ -19,6 +19,7 @@
   "homepage": "https://github.com/EnnTere/SBA319-MongoDB_Database_App#readme",
   "description": "",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mongoose": "^8.9.6"
   }
