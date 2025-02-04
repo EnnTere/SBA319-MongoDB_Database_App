@@ -1,4 +1,4 @@
-var sessions = new Schema({
+const sessions = new Schema({
     _id: {
         type: Schema.Types.ObjectId,
         required: true

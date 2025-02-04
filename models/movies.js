@@ -1,4 +1,4 @@
-var movies = new Schema({
+const movies = new Schema({
     _id: {
         type: Schema.Types.ObjectId,
         required: true

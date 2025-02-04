@@ -1,4 +1,4 @@
-var theaters = new Schema({
+const theaters = new Schema({
     _id: {
         type: Schema.Types.ObjectId,
         required: true

@@ -1,23 +1,72 @@
 // Server
-const express = require("express");
+import express from "express";
 const app = express();
 const port = 7000;
 
-const { error } = require("console");
-const { default: mongoose } = require("mongoose");
+import { error } from "console";
+import mongoose from "mongoose";
+import "dotenv/config"
+
+// Models
+import embedMovie from "./models/embedded_movies.js";
 
 // Mongoose
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected w/ Mongoose"));
 
+
+// Test movie document obj /////
+
+// Creating
+const newMovie = new embedMovie({
+  genres: "action",
+  year: 1914,
+  type: "movie", 
+  title: "BAD Movie",
+});
+
+newMovie.year = 1814;
+// Saving
+async () => {
+  await newMovie.save();
+  console.log("saved");
+};
+console.log(newMovie);
+
+
+const badMovie2 = await embedMovie.create({
+  genres: "action",
+  year: 1914,
+  type: "movie", 
+  title: "BAD Movie2",
+});
+
+
 // app.set ("", "")
 // app.set ("", "")
 
+////// Routes ////
 // Root Route
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
   res.json("You are at root");
 });
+
+// Retrieving & set new property
+app.get("/", async (req, res) => {
+  let badMovie = await embedMovie.findOne({ title: "BAD Movie" });
+  console.log(badMovie);
+
+  badMovie.bagsOfPopcorn = 5;
+  await badMovie.save();
+  
+  res.send("BadMovie sent");
+  console.log("BadMovie sent");
+});
+
+
+
+console.log(badMovie2.title);
 
 
 // Routes
@@ -53,7 +102,7 @@ app.use((req, res, next) => {
 
 // 404 not found
 app.use((req, res, next) => {
-  next(error(404, "Resoure Not Found"))
+  next(error(404, "Resource Not Found"))
 });
 
 // General Error Handler
