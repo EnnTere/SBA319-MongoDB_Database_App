@@ -19,10 +19,11 @@ const getAllMovies = async (req, res, next) => {
     });
     console.log("All movies retrieved");
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   message: "Server Error",
+    // });
+    next(error);
   }
 };
 
@@ -36,10 +37,11 @@ const getOneMovie = async (req, res, next) => {
     });
     console.log("One movie retrieved");
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   message: "Server Error",
+    // });
+    next(error);
   }
 };
 
@@ -76,7 +78,7 @@ const createAndSaveMovie = async (req, res, next) => {
     //   success: false,
     //   message: "Server Error",
     // });
-    next();
+    next(error);
   }
 };
 
@@ -96,7 +98,7 @@ const createMovie = async (req, res, next) => {
     //   success: false,
     //   message: "Server Error",
     // });
-    next();
+    next(error);
   }
 };
 
@@ -120,10 +122,11 @@ const updateMovie = async (req, res, next) => {
     });  
     console.log("Movie updated");
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   message: "Server Error",
+    // });
+    next(error);
   }
 };
 
@@ -143,10 +146,11 @@ const deleteMovie = async (req, res, next) => {
     });  
     console.log("Movie Deleted");
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   message: "Server Error",
+    // });
+    next(error);
   }
 };
 

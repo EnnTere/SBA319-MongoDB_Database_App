@@ -21,14 +21,19 @@ import connectDB from "./config/connectDB.js"
 connectDB();
 
 
+///// Middleware - Body Parsers /////
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ extended: true }));
+
+
 //////////////////////
 /////// Routes ///////
 //////////////////////
 
 import movieRoute from "./routes/movieRte.js";
 
-app.use(movieRoute);
-
+// app.use(movieRoute);
+app.use("/api", movieRoute)
 
 // app.set ("", "")
 // app.set ("", "")
@@ -39,21 +44,11 @@ app.get("/", async (req, res) => {
   res.json("You are at root");
 });
 
-app.use("/api", movieRoute)
-
-
-import { connect } from "http2";
-
-
+//import { connect } from "http2";
 
 //////////////////////
 ///// Middleware /////
 //////////////////////
-
-///// Body Parsers /////
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json({ extended: true }));
-
 
 ///// Request Logging /////
 app.use((req, res, next) => {
@@ -72,8 +67,15 @@ app.use((req, res, next) => {
 ///// Errors /////
 
 // 404 not found
+// app.use((req, res, next) => {
+//   next(new Error(404, "Resource Not Found"))
+// });
+
+// 404 not found
 app.use((req, res, next) => {
-  next(error(404, "Resource Not Found"))
+  const err = new Error("Resource Not Found");
+  err.status = 404;
+  next(err);
 });
 
 // General Error Handler

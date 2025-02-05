@@ -17,21 +17,14 @@ import { getAllMovies, getOneMovie, createAndSaveMovie, createMovie, updateMovie
 
 
 router.get("/movies", getAllMovies);
-router.post("/movies", createAndSaveMovie);
-// router.post("/movies", createMovie);
-// router.put("/movies/:id", updateMovie);
-// router.delete("/movies/:id", deleteMovie);
-
-
+// router.post("/movies", createAndSaveMovie);
+router.post("/movies", createMovie);
 
 // Routes for specific movies
 router.route("/movies/:id")
   .get(getOneMovie)
   .put(updateMovie)
   .delete(deleteMovie)
-
-
-
 
 export default router;
 

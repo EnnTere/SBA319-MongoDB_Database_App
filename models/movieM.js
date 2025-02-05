@@ -15,10 +15,10 @@ const { Schema, model } = mongoose;
 
 
 const movieSchema = new Schema({
-    _id: {
-        type: Schema.Types.ObjectId,
-        required: true
-    },
+    // _id: {
+    //     type: Schema.Types.ObjectId,
+    //     required: true
+    // },
     plot: {
         type: String
     },
@@ -163,4 +163,4 @@ const movieSchema = new Schema({
     ]
 });
 
-export const movieModel = model("MovieModel", movieSchema);
+export const movieModel = model("MovieModel", movieSchema, "movies");
