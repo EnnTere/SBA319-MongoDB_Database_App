@@ -3,13 +3,50 @@
 
 // Embedded Movies Model
 import { movieModel } from "../models/movieM.js";
-
+import pagination from "../utils/pagination.js";
 
 
 
 //// GET ////
 
-// Finding & Retrieving data
+const getMovies = async (req, res, next) => {
+  try {
+    let query = movieModel.find();
+
+    // Pagination
+    const { skip, limit } = pagination(req);
+
+    // Sorting
+    const sort = req.query.sort || 'year';
+    const order = req.query.order === 'desc' ? -1 : 1;
+    query = query.skip(skip).limit(limit).sort({ [sort]: order });
+
+    // Queries
+    if (req.query.yearFrom && req.query.yearTo) query = query.findByYearRange(req.query.yearFrom, req.query.yearTo);
+    if (req.query.title) query = query.byTitle(req.query.titles);
+    if (req.query.genre) query = query.findByGenre(req.query.genre);
+    if (req.query.director) query = query.findByDirector(req.query.director);
+    if (req.query.metacritic) query = query.findByScore(req.query.metacritic);
+
+    const movies = await query
+
+    res.status(200).json({
+      success: true,
+      movies: movies,
+    });
+    console.log("Movies retrieved");
+  } catch (error) {
+    // res.status(500).json({
+    //   success: false,
+    //   message: "Server Error",
+    // });
+    next(error);
+  }
+};
+
+
+/////////// For Testing ///////////
+// Get all movies  
 const getAllMovies = async (req, res, next) => {
   try {
     const allMovies = await movieModel.find();
@@ -27,6 +64,7 @@ const getAllMovies = async (req, res, next) => {
   }
 };
 
+// Get movie by ID
 const getOneMovie = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -44,6 +82,8 @@ const getOneMovie = async (req, res, next) => {
     next(error);
   }
 };
+
+
 
 
 // const firstMovie = await movieModel.findOne({});
@@ -155,9 +195,8 @@ const deleteMovie = async (req, res, next) => {
 };
 
 
-
-
 export { 
+  getMovies,
   getAllMovies, 
   getOneMovie,
   createAndSaveMovie, 

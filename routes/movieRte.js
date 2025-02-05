@@ -4,7 +4,7 @@ const router = express.Router();
 //const app = express();
 
 // Model
-import { getAllMovies, getOneMovie, createAndSaveMovie, createMovie, updateMovie, deleteMovie } from "../controllers/movieC.js";
+import { getMovies, getAllMovies, getOneMovie, createAndSaveMovie, createMovie, updateMovie, deleteMovie } from "../controllers/movieC.js";
 
 
 // Routes
@@ -15,16 +15,38 @@ import { getAllMovies, getOneMovie, createAndSaveMovie, createMovie, updateMovie
 // DELETE /api/movies/:id
 
 
-
-router.get("/movies", getAllMovies);
+router.get("/", getMovies);
+router.get("/all", getAllMovies); // - For Testing
 // router.post("/movies", createAndSaveMovie);
-router.post("/movies", createMovie);
+router.post("/", createMovie);
+
+
+
+router.get("/", getAllMovies);
+router.post("/", createMovie);
+// router.post("/", createAndSaveMovie); // Alternative Option
+
+// router.get("/movies", getAllMovies);
+// router.post("/movies", createMovie);
+// // router.post("/movies", createAndSaveMovie); // Alternative Option
+
 
 // Routes for specific movies
-router.route("/movies/:id")
+router.route("/:id")
+  // .get(getOneMovie) - For Testing
   .get(getOneMovie)
   .put(updateMovie)
   .delete(deleteMovie)
+
+//   router.get("/movies", getAllMovies);
+// // router.post("/movies", createAndSaveMovie);
+// router.post("/movies", createMovie);
+
+// // Routes for specific movies
+// router.route("/movies/:id")
+//   .get(getOneMovie)
+//   .put(updateMovie)
+//   .delete(deleteMovie)
 
 export default router;
 

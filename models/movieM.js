@@ -170,6 +170,63 @@ const movieSchema = new Schema({
     ]
 });
 
+////////////////
+// Queries 
+////////////////
+
+movieSchema.query.byTitle = function(title) {
+    return this.where({ title: title})
+}
+
+movieSchema.statics.findByGenre = function(genres) {
+    return this.find({ genres: genres });
+};
+
+movieSchema.statics.findByDirector = function(director) {
+    return this.find({ director: director });
+};
+
+//Attempts at year range
+
+movieSchema.statics.findByYearRange = function(yearFrom, yearTo) {
+    return this.find({ year: { $gte: yearFrom, $lte: yearTo } });
+};
+
+movieSchema.virtual('yearRange').get(function () {
+    return this.year >= 2000 && this.year < 2010;
+});
+
+
+
+
+
+
+// // GET Queries
+// // Limit Results and Pagination
+// GET /api/movies?limit=10&page=2
+
+// // By Title
+// GET /api/movies?title=Inception
+
+// // By Year
+// GET /api/movies?year=2020
+
+// // Within A Year Range
+// GET /api/movies?yearFrom=2010&yearTo=2020
+
+// // General Sorting by year (ascending/descending)
+// GET /api/movies?sort=year&order=asc
+// GET /api/movies?sort=year&order=desc
+
+// // By Genre
+// GET /api/movies?genre=Action
+// GET /api/movies?genres=["Action", "Sci-Fi"]
+
+// // By Director
+// GET /api/movies?director=Christopher Nolan
+
+
+
 
 // Indexes // Testing these vs secondary in schema
 movieSchema.index({ title: 1 });

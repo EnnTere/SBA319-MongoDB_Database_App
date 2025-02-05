@@ -7,15 +7,8 @@ import express from "express";
 const app = express();
 const port = process.env.PORT || 7000;
 
-import { error } from "console";
+import { error } from "console"; // unsure where this came from & didn't have time to look in to
 import connectDB from "./config/connectDB.js"
-// import mongoose from "mongoose";
-// import "dotenv/config"
-
-// Mongoose
-// mongoose
-//   .connect(process.env.MONGO_URI)
-//   .then(() => console.log("MongoDB Connected w/ Mongoose"));
 
 // MongoDB Connection
 connectDB();
@@ -32,19 +25,16 @@ app.use(express.json({ extended: true }));
 
 import movieRoute from "./routes/movieRte.js";
 
-// app.use(movieRoute);
-app.use("/api", movieRoute)
-
-// app.set ("", "")
-// app.set ("", "")
+// app.use("/api", <Route Placeholder>); // did not include other routes because was not able to implement other routes due to time
+app.use("/api/movies", movieRoute)
 
 
-// Root Routes
+// Root Route
 app.get("/", async (req, res) => {
   res.json("You are at root");
 });
 
-//import { connect } from "http2";
+//import { connect } from "http2"; // unsure where this came from & didn't have time to look in to
 
 //////////////////////
 ///// Middleware /////
@@ -66,12 +56,7 @@ app.use((req, res, next) => {
 
 ///// Errors /////
 
-// 404 not found
-// app.use((req, res, next) => {
-//   next(new Error(404, "Resource Not Found"))
-// });
-
-// 404 not found
+// 404 not found - unsure if optimized
 app.use((req, res, next) => {
   const err = new Error("Resource Not Found");
   err.status = 404;
@@ -83,8 +68,6 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({ error: err.message })
 });
-
-
 
 
 ///////////////////////////////
