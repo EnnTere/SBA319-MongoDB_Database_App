@@ -154,6 +154,9 @@ const deleteMovie = async (req, res, next) => {
   }
 };
 
+
+
+
 export { 
   getAllMovies, 
   getOneMovie,

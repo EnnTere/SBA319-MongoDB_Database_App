@@ -22,11 +22,10 @@ const movieSchema = new Schema({
     plot: {
         type: String
     },
-    genres: [
-        {
-            type: String
-        }
-    ],
+    genres: {
+        type: [String],
+        index: true
+    },
     runtime: {
         type: Number
     },
@@ -40,7 +39,8 @@ const movieSchema = new Schema({
     },
     title: {
         type: String,
-        required: true
+        required: true,
+        //index: true
     },
     fullplot: {
         type: String
@@ -53,11 +53,10 @@ const movieSchema = new Schema({
     released: {
         type: Date
     },
-    directors: [
-        {
-            type: String
-        }
-    ],
+    directors: {
+        type: [String],
+        //index: true
+    },
     rated: {
         type: String
     },
@@ -77,7 +76,14 @@ const movieSchema = new Schema({
         //required: true
     },
     year: {
-        type: Schema.Types.Mixed
+        type: Schema.Types.Mixed,
+        validate: {
+            validator: function(val) {
+                return val <= new Date().getFullYear();
+            },
+            message: "They haven't made any movies for that year yet!" 
+        },
+        index: true
     },
     imdb: {
         rating: {
@@ -154,7 +160,8 @@ const movieSchema = new Schema({
         //required: true
     },
     metacritic: {
-        type: Number
+        type: Number,
+        //index: true
     },
     writers: [
         {
@@ -162,5 +169,14 @@ const movieSchema = new Schema({
         }
     ]
 });
+
+
+// Indexes // Testing these vs secondary in schema
+movieSchema.index({ title: 1 });
+//movieSchema.index({ genres: 1 });
+//movieSchema.index({ year: -1 });
+movieSchema.index({ directors: 1 });
+movieSchema.index({ metacritic: 1 });
+
 
 export const movieModel = model("MovieModel", movieSchema, "movies");
