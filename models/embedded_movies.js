@@ -1,6 +1,18 @@
 // const { default: mongoose } = require("mongoose");
 import mongoose from "mongoose";
-const {Schema, model } = mongoose;
+const { Schema, model } = mongoose;
+
+
+////// Validation Options //////
+//// Only run on create or save methods
+// type: <data type>
+// required: <boolean>
+// immutable: <boolean> - unable to be changed
+// lowercase: <boolean> - converts
+// default: <value> default if nothing is entered
+// ex. default: () => Date.now()
+
+
 
 const embedMovieSchema = new Schema({
     // _id: {
@@ -314,6 +326,9 @@ const embedMovieSchema = new Schema({
 // });
 
 
-// const embeddedMovies = model("EmbeddedMovies", embedded_movies);
-export default mongoose.model("EmbeddedMovies", embedMovieSchema);
-// module.export = embedded_movies;
+const embeddedMovies = model("EmbeddedMovies", embedMovieSchema);
+export default embeddedMovies;
+
+
+// export default mongoose.model("EmbeddedMovies", embedMovieSchema);
+// module.export = embedMovieSchema;

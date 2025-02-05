@@ -1,14 +1,15 @@
+//////////////////////////
+/// Server & Database ///
+////////////////////////
+
 // Server
 import express from "express";
 const app = express();
 const port = 7000;
 
-import { error } from "console";
+import error from "console";
 import mongoose from "mongoose";
 import "dotenv/config"
-
-// Models
-import embedMovie from "./models/embedded_movies.js";
 
 // Mongoose
 mongoose
@@ -16,63 +17,128 @@ mongoose
   .then(() => console.log("MongoDB Connected w/ Mongoose"));
 
 
-// Test movie document obj /////
 
-// Creating
-const newMovie = new embedMovie({
-  genres: "action",
-  year: 1914,
-  type: "movie", 
-  title: "BAD Movie",
-});
+//////////////////////
+/////// Routes ///////
+//////////////////////
 
-newMovie.year = 1814;
-// Saving
-async () => {
-  await newMovie.save();
-  console.log("saved");
-};
-console.log(newMovie);
+import embedMovieRoute from "./routes/embedMovieRte.js";
 
-
-const badMovie2 = await embedMovie.create({
-  genres: "action",
-  year: 1914,
-  type: "movie", 
-  title: "BAD Movie2",
-});
+app.use(embedMovieRoute);
 
 
 // app.set ("", "")
 // app.set ("", "")
 
-////// Routes ////
+
 // Root Route
 app.get("/", async (req, res) => {
   res.json("You are at root");
 });
 
-// Retrieving & set new property
-app.get("/", async (req, res) => {
-  let badMovie = await embedMovie.findOne({ title: "BAD Movie" });
-  console.log(badMovie);
 
-  badMovie.bagsOfPopcorn = 5;
-  await badMovie.save();
-  
-  res.send("BadMovie sent");
-  console.log("BadMovie sent");
+
+
+///// Test movie document obj /////
+
+
+// Models
+import embeddedMovieModel from "./models/embedded_movies.js";
+
+
+//// POST ////
+
+// Inserting new data w/ Save
+
+// 1. Instantiate
+const newActionMovie = new embeddedMovieModel({
+  genres: "action",
+  year: 1914,
+  type: "movie", 
+  title: "Action Movie",
 });
 
+// 2. Save
+newActionMovie.year = 1814;
+
+async () => {
+  await newActionMovie.save();
+};
+//console.log("newActionMovie Saved: " + newActionMovie);
 
 
-console.log(badMovie2.title);
+
+// Inserting new data w/ Create 
+// Instantiates & Saves
+const newDramaMovie = await embeddedMovieModel.create({
+  genres: "drama",
+  year: 1954,
+  type: "movie", 
+  title: "Drama Movie",
+});
+
+//console.log("newDramaMovie Saved: " + newDramaMovie);
 
 
-// Routes
-// Import Routes
+//// GET ////
 
-// Routes
+// Finding & Retrieving data
+// const firstMovie = await embeddedMovieModel.findOne({});
+// const actionMovie = await embeddedMovieModel.findOne({ title: "Action Movie" });
+// //console.log(`firstMovie found: ${firstMovie} actionMovie found: ${actionMovie}`);
+// const findMovie = await embeddedMovieModel.findById("67a2d6b7b915e9e054d20e62").exec();
+// console.log("Found movie: " + findMovie);
+
+
+// Projecting (specify or restrict fields to return)
+// const projectActionMovie = await embeddedMovieModel.findById("67a2d6b7b915e9e054d20e62", "genres type title").exec();
+// console.log("Action Movie Projection: " + projectActionMovie);
+
+
+//// PATCH ////
+
+// Update the new data
+// console.log("newDramaMovie Year Before Update: " + newDramaMovie.year);
+// newDramaMovie.year = 1915;
+// await newDramaMovie.save();
+// console.log("newDramaMovie Year After Update: " + newDramaMovie.year);
+
+
+//// DELETE ////
+
+// const movieDelete1 = await embeddedMovieModel.deleteOne({ title: "Action Movie" });
+// console.log("Deleted Movie 1: " + movieDelete1);
+
+// const movieDelete2 = await embeddedMovieModel.deleteMany({ title: "Action Movie" });
+// console.log("Deleted Movie 2: " + movieDelete2);
+
+
+
+
+
+
+
+
+////// Test Routes //////
+
+// GET + PATCH
+// Retrieving & set new property
+// app.get("/", async (req, res) => {
+//   // let badMovie = await embedMovie.findOne({ title: "BAD Movie" });
+//   // console.log(badMovie);
+
+//   badMovie.bagsOfPopcorn = 5;
+//   await badMovie.save();
+  
+//   res.send("BadMovie sent");
+//   console.log("BadMovie sent");
+//   console.log("BadMovie title: " + badMovie.title);
+// });
+
+
+
+
+
 
 //////////////////////
 ///// Middleware /////
@@ -111,7 +177,13 @@ app.use((err, req, res, next) => {
   res.json({ error: err.message })
 });
 
-// Port
+
+
+
+//////////////////////
+//////// Port ////////
+//////////////////////
+
 app.listen(port, () => {
   console.log(`Server listening to ${port}`);
 });
