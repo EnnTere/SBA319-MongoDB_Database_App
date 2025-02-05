@@ -2,7 +2,7 @@
 //routes -> controller -> model -> controller -> view
 
 // Embedded Movies Model
-import { embeddedMovieModel } from "../models/embedMovie_Model.js";
+import { movieModel } from "../models/movieM.js";
 
 
 
@@ -10,14 +10,31 @@ import { embeddedMovieModel } from "../models/embedMovie_Model.js";
 //// GET ////
 
 // Finding & Retrieving data
-const getAllMovies = async (req, res) => {
+const getAllMovies = async (req, res, next) => {
   try {
-    const allMovies = await embeddedMovieModel.find();
+    const allMovies = await movieModel.find();
     res.status(200).json({
       success: true,
       movies: allMovies,
     });
-    console.log("All movies retrieved: " + getAllMovies);
+    console.log("All movies retrieved");
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const getOneMovie = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const oneMovie = await movieModel.findById(id).exec();
+    res.status(200).json({
+      success: true,
+      movies: oneMovie,
+    });
+    console.log("One movie retrieved");
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -27,78 +44,81 @@ const getAllMovies = async (req, res) => {
 };
 
 
-// const firstMovie = await embeddedMovieModel.findOne({});
-// const actionMovie = await embeddedMovieModel.findOne({ title: "Action Movie" });
+// const firstMovie = await movieModel.findOne({});
+// const actionMovie = await movieModel.findOne({ title: "Action Movie" });
 // //console.log(`firstMovie found: ${firstMovie} actionMovie found: ${actionMovie}`);
-// const findMovie = await embeddedMovieModel.findById("67a2d6b7b915e9e054d20e62").exec();
+// const findMovie = await movieModel.findById("67a2d6b7b915e9e054d20e62").exec();
 // console.log("Found movie: " + findMovie);
 
 
 //Projecting (specify or restrict fields to return)
-// const projectActionMovie = await embeddedMovieModel.findById("67a2d6b7b915e9e054d20e62", "genres type title").exec();
+// const projectActionMovie = await movieModel.findById("67a2d6b7b915e9e054d20e62", "genres type title").exec();
 // console.log("Action Movie Projection: " + projectActionMovie);
+
 
 
 
 //// POST ////
 
 // Inserting new data w/ Save
-const createAndSaveMovie = async (req, res) => {
+const createAndSaveMovie = async (req, res, next) => {
   try {
     const { genres, year, type, title } = req.body;
-    const newMovie = new embeddedMovieModel({ genres, year, type, title }); // 1. Instantiate
+    const newMovie = new movieModel({ genres, year, type, title }); // 1. Instantiate
     await newMovie.save(); // 2. Save
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       movie: newMovie,
     }); 
-    console.log("newMovie Create & Save: " + newMovie); // bug 
+    console.log("newMovie Created & Saved"); // bug 
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   message: "Server Error",
+    // });
+    next();
   }
 };
 
 
 // Inserting new data w/ Create
-const createMovie = async (req, res) => {
+const createMovie = async (req, res, next) => {
   try { 
     const { genres, year, type, title } = req.body;
-    const newMovie = new embeddedMovieModel.create({ genres, year, type, title }); // Instantiates & Saves
-    res.status(201).json({
+    const newMovie = await movieModel.create({ genres, year, type, title }); // Instantiates & Saves
+    res.status(200).json({
       success: true,
       movie: newMovie,
     });  
-    console.log("newMovie Created: " + newMovie);
+    console.log("newMovie Created");
   } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
+    // res.status(500).json({
+    //   success: false,
+    //   message: "Server Error",
+    // });
+    next();
   }
 };
 
 
 
 
-//// PATCH ////
+//// PUT ////
 
-const updateMovie = async (req, res) => {
+const updateMovie = async (req, res, next) => {
   try { 
     const { id } = req.params;
     const { genres, year, type, title } = req.body;
-    const updatedMovie = await embeddedMovieModel.findByIdAndUpdate(
+    const updatedMovie = await movieModel.findByIdAndUpdate(
       id,
       { genres, year, type, title },
       { new: true }
     );
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       movie: updatedMovie,
     });  
-    console.log("Movie updated: " + updateMovie);
+    console.log("Movie updated");
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -110,18 +130,18 @@ const updateMovie = async (req, res) => {
 
 
 //// DELETE ////
-const deleteMovie = async (req, res) => {
+const deleteMovie = async (req, res, next) => {
   try { 
     const { id } = req.params;
-    const deletedMovie = await embeddedMovieModel.findByIdAndDelete(id);
+    const deletedMovie = await movieModel.findByIdAndDelete(id);
     if (!deletedMovie) {
       return res.status(404).json({ message: "Movie entry not found"})
     }
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "Movie entry deleted",
     });  
-    console.log("Deleted movie: " + deleteMovie);
+    console.log("Movie Deleted");
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -132,10 +152,9 @@ const deleteMovie = async (req, res) => {
 
 export { 
   getAllMovies, 
+  getOneMovie,
   createAndSaveMovie, 
   createMovie, 
   updateMovie, 
   deleteMovie 
 };
-
-

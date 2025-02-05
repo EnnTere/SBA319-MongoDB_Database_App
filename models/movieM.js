@@ -1,4 +1,20 @@
-const movies = new Schema({
+import { mongoose } from "mongoose";
+const { Schema, model } = mongoose;
+
+
+////// Validation Options //////
+//// Only run on create or save methods
+// type: <data type>
+// required: <boolean>
+// immutable: <boolean> - unable to be changed
+// lowercase: <boolean> - converts
+// default: <value> default if nothing is entered
+// ex. default: () => Date.now()
+
+// const Schema = mongoose.Schema?? What is this for
+
+
+const movieSchema = new Schema({
     _id: {
         type: Schema.Types.ObjectId,
         required: true
@@ -45,7 +61,7 @@ const movies = new Schema({
     rated: {
         type: String
     },
-    awards: new Schema({
+    awards: {
         wins: {
             type: Number
         },
@@ -55,15 +71,15 @@ const movies = new Schema({
         text: {
             type: String
         }
-    }),
+    },
     lastupdated: {
         type: Date,
-        required: true
+        //required: true
     },
     year: {
         type: Schema.Types.Mixed
     },
-    imdb: new Schema({
+    imdb: {
         rating: {
             type: Schema.Types.Mixed
         },
@@ -73,7 +89,7 @@ const movies = new Schema({
         id: {
             type: Number
         }
-    }),
+    },
     countries: [
         {
             type: String
@@ -83,8 +99,8 @@ const movies = new Schema({
         type: String,
         required: true
     },
-    tomatoes: new Schema({
-        viewer: new Schema({
+    tomatoes: {
+        viewer: {
             rating: {
                 type: Number
             },
@@ -94,11 +110,11 @@ const movies = new Schema({
             meter: {
                 type: Number
             }
-        }),
+        },
         fresh: {
             type: Number
         },
-        critic: new Schema({
+        critic: {
             rating: {
                 type: Number
             },
@@ -107,15 +123,15 @@ const movies = new Schema({
             },
             meter: {
                 type: Number,
-                required: true
+                //required: true
             }
-        }),
+        },
         rotten: {
             type: Number
         },
         lastUpdated: {
             type: Date,
-            required: true
+            //required: true
         },
         boxOffice: {
             type: String
@@ -132,10 +148,10 @@ const movies = new Schema({
         website: {
             type: String
         }
-    }),
+    },
     num_mflix_comments: {
         type: Number,
-        required: true
+        //required: true
     },
     metacritic: {
         type: Number
@@ -146,3 +162,5 @@ const movies = new Schema({
         }
     ]
 });
+
+export const movieModel = model("MovieModel", movieSchema);

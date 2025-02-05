@@ -14,10 +14,10 @@ const { Schema, model } = mongoose;
 // const Schema = mongoose.Schema?? What is this for
 
 const embedMovieSchema = new Schema({
-    // _id: {
-    //     type: Schema.Types.ObjectId,
-    //     required: true
-    // },
+    _id: {
+        type: Schema.Types.ObjectId,
+        required: true
+    },
     plot: {
         type: String
     },
@@ -325,7 +325,7 @@ const embedMovieSchema = new Schema({
 // });
 
 
-export const embeddedMovieModel = model("EmbeddedMovies", embedMovieSchema);
+// export const embeddedMovieModel = model("EmbeddedMovies", embedMovieSchema);
 // export const embeddedMovies = mongoose.model("EmbeddedMovies", embedMovieSchema);
 
 // export default mongoose.model("EmbeddedMovies", embedMovieSchema);

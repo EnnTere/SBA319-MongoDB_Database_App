@@ -4,13 +4,9 @@ const router = express.Router();
 //const app = express();
 
 // Model
-import { embeddedMovieModel } from "../models/embedMovie_Model.js";
-// import { embeddedMovieModel } from "../controllers/embedMovie_Ctrl.js";
+import { movieModel } from "../models/movieM.js";
 
-//import * as movieControls from "../controllers/embedMovie_Ctrl.js";
-
-
-import { getAllMovies, createAndSaveMovie, createMovie, updateMovie, deleteMovie } from "../controllers/embedMovie_Ctrl.js";
+import { getAllMovies, createAndSaveMovie, createMovie, updateMovie, deleteMovie } from "../controllers/embedMovieC.js";
 
 
 
