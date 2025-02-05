@@ -5,17 +5,20 @@
 // Server
 import express from "express";
 const app = express();
-const port = 7000;
+const port = process.env.PORT || 7000;
 
-import error from "console";
-import mongoose from "mongoose";
-import "dotenv/config"
+import { error } from "console";
+import connectDB from "./config/connectDB.js"
+// import mongoose from "mongoose";
+// import "dotenv/config"
 
 // Mongoose
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB Connected w/ Mongoose"));
+// mongoose
+//   .connect(process.env.MONGO_URI)
+//   .then(() => console.log("MongoDB Connected w/ Mongoose"));
 
+// MongoDB Connection
+connectDB();
 
 
 //////////////////////
@@ -31,19 +34,20 @@ app.use(embedMovieRoute);
 // app.set ("", "")
 
 
-// Root Route
+// Root Routes
 app.get("/", async (req, res) => {
   res.json("You are at root");
 });
 
-
+app.use("/api", embedMovieRoute)
 
 
 ///// Test movie document obj /////
 
 
 // Models
-import embeddedMovieModel from "./models/embedded_movies.js";
+//import embeddedMovieModel from "./models/embedded_movies.js";
+import { connect } from "http2";
 
 
 //// POST ////
@@ -51,31 +55,31 @@ import embeddedMovieModel from "./models/embedded_movies.js";
 // Inserting new data w/ Save
 
 // 1. Instantiate
-const newActionMovie = new embeddedMovieModel({
-  genres: "action",
-  year: 1914,
-  type: "movie", 
-  title: "Action Movie",
-});
+// const newActionMovie = new embeddedMovieModel({
+//   genres: "action",
+//   year: 1914,
+//   type: "movie", 
+//   title: "Action Movie",
+// });
 
-// 2. Save
-newActionMovie.year = 1814;
+// // 2. Save
+// newActionMovie.year = 1814;
 
-async () => {
-  await newActionMovie.save();
-};
+// async () => {
+//   await newActionMovie.save();
+// };
 //console.log("newActionMovie Saved: " + newActionMovie);
 
 
 
 // Inserting new data w/ Create 
 // Instantiates & Saves
-const newDramaMovie = await embeddedMovieModel.create({
-  genres: "drama",
-  year: 1954,
-  type: "movie", 
-  title: "Drama Movie",
-});
+// const newDramaMovie = await embeddedMovieModel.create({
+//   genres: "drama",
+//   year: 1954,
+//   type: "movie", 
+//   title: "Drama Movie",
+// });
 
 //console.log("newDramaMovie Saved: " + newDramaMovie);
 
@@ -180,9 +184,9 @@ app.use((err, req, res, next) => {
 
 
 
-//////////////////////
-//////// Port ////////
-//////////////////////
+///////////////////////////////
+//////// Server Start ////////
+/////////////////////////////
 
 app.listen(port, () => {
   console.log(`Server listening to ${port}`);

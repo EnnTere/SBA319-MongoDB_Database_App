@@ -1,5 +1,4 @@
-// const { default: mongoose } = require("mongoose");
-import mongoose from "mongoose";
+import { mongoose } from "mongoose";
 const { Schema, model } = mongoose;
 
 
@@ -12,7 +11,7 @@ const { Schema, model } = mongoose;
 // default: <value> default if nothing is entered
 // ex. default: () => Date.now()
 
-
+// const Schema = mongoose.Schema?? What is this for
 
 const embedMovieSchema = new Schema({
     // _id: {
@@ -326,9 +325,8 @@ const embedMovieSchema = new Schema({
 // });
 
 
-const embeddedMovies = model("EmbeddedMovies", embedMovieSchema);
-export default embeddedMovies;
-
+export const embeddedMovieModel = model("EmbeddedMovies", embedMovieSchema);
+// export const embeddedMovies = mongoose.model("EmbeddedMovies", embedMovieSchema);
 
 // export default mongoose.model("EmbeddedMovies", embedMovieSchema);
 // module.export = embedMovieSchema;
